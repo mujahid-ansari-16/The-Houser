@@ -104,7 +104,7 @@ if (!DB_CONNECTION_STRING) {
 mongoose.connect(DB_CONNECTION_STRING ).then(() => {
   console.log('Connected to Mongo');
   app.listen(PORT, () => {
-    console.log(`Server running on address http://localhost:${PORT}`);
+    console.log(`Server running on address ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}`);
   });
 }).catch(err => {
   console.log('Error while connecting to Mongo: ', err);
