@@ -95,7 +95,7 @@ app.use(errorsController.pageNotFound);
 
 const PORT = 3000;
 
-mongoose.connect(DB_PATH,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+mongoose.connect(DB_PATH).then(() => {
   console.log('Connected to Mongo');
   app.listen(PORT, () => {
     console.log(`Server running on address http://localhost:${PORT}`);
