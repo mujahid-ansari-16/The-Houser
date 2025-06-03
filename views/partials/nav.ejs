@@ -1,0 +1,72 @@
+<header class="bg-gradient-to-r from-gray-900 via-black to-gray-800 text-white shadow-lg">
+  <nav class="container mx-auto flex flex-wrap justify-between items-center py-4 px-2">
+    <ul class="flex flex-wrap items-center space-x-2 md:space-x-6 w-full md:w-auto">
+        <li>
+          <a
+            href="/"
+            class="<%= currentPage === 'index' ? 'bg-gray-800 text-yellow-400' : 'hover:bg-gray-700 hover:text-yellow-400' %> py-2 px-4 rounded-lg transition-all duration-300 font-semibold tracking-wide shadow-md hover:scale-105"
+            >Houser</a
+          >
+        </li>
+      <% if(isLoggedIn) { %>
+          <% if(user && user.userType === 'guest') { %>
+              <li>
+                <a
+                  href="/homes"
+                  class="<%= currentPage === 'Home' ? 'bg-gray-800 text-yellow-400' : 'hover:bg-gray-700 hover:text-yellow-400' %> py-2 px-4 rounded-lg transition-all duration-300 font-semibold tracking-wide shadow-md hover:scale-105"
+                  >Homes-List</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/favourites"
+                  class="<%= currentPage === 'favourites' ? 'bg-gray-800 text-yellow-400' : 'hover:bg-gray-700 hover:text-yellow-400' %> py-2 px-4 rounded-lg transition-all duration-300 font-semibold tracking-wide shadow-md hover:scale-105"
+                  >Favourites</a
+                >
+              </li>
+          <% } else { %>
+              <li>
+                <a
+                  href="/host/host-home-list"
+                  class="<%= currentPage === 'host-homes' ? 'bg-gray-800 text-yellow-400' : 'hover:bg-gray-700 hover:text-yellow-400' %> py-2 px-4 rounded-lg transition-all duration-300 font-semibold tracking-wide shadow-md hover:scale-105"
+                  >Host Homes</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/host/add-home"
+                  class="<%= currentPage === 'addHome' ? 'bg-gray-800 text-yellow-400' : 'hover:bg-gray-700 hover:text-yellow-400' %> py-2 px-4 rounded-lg transition-all duration-300 font-semibold tracking-wide shadow-md hover:scale-105"
+                  >Add Home</a
+                >
+              </li>
+          <% } %>
+      <% } %>
+      <% if(!isLoggedIn) { %>
+          <li>
+              <a
+                href="/login"
+                class="hover:bg-gray-700 hover:text-yellow-400 py-2 px-4 rounded-lg transition-all duration-300 font-semibold tracking-wide shadow-md hover:scale-105"
+                >Login
+              </a>
+          </li>
+          <li>
+            <a
+              href="/Signup"
+              class="hover:bg-gray-700 hover:text-yellow-400 py-2 px-4 rounded-lg transition-all duration-300 font-semibold tracking-wide shadow-md hover:scale-105"
+              >Signup
+            </a>
+          </li>
+        <% } else {%>
+          <li>
+              <form action="/logout" method="POST">
+                  <button
+                  type="submit"
+                    class="hover:bg-gray-700 hover:text-yellow-400 py-2 px-4 rounded-lg transition-all duration-300 font-semibold tracking-wide shadow-md hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50">
+                    Logout
+                  </button>
+              </form>
+            </li>
+        <% } %>
+    </ul>
+  </nav>
+</header>

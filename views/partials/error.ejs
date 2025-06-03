@@ -1,0 +1,11 @@
+<% if ( errors.length > 0 ) { %>
+  <div class="bg-gradient-to-r from-red-900 via-red-800 to-gray-900 border border-red-600 text-red-300 px-6 py-4 rounded-xl shadow-lg mb-4 animate-shake transition-all duration-300">
+    <span class="font-extrabold text-lg tracking-widest text-yellow-400 block mb-1">Error!</span>
+    <span class="block sm:inline text-red-200 mb-2">Please correct the following errors:</span>
+    <ul class="list-disc list-inside space-y-1 pl-4">
+      <% errors.forEach(error => { %>
+        <li class="text-red-300 text-base font-semibold"><%= error %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
