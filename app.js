@@ -1,4 +1,6 @@
 
+
+
 require('dotenv').config();
 
 const path = require('path');
@@ -6,7 +8,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const express = require('express');
 const multer = require('multer');
-const { default: mongoose } = require('mongoose'); // Using default:mongoose is fine
+const { default: mongoose } = require('mongoose');
 
 const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
@@ -19,37 +21,43 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+
 const PORT = process.env.PORT || 3000;
 const DB_CONNECTION_STRING = process.env.DB_PATH;
-const SESSION_SECRET = process.env.SESSION_SECRET || "my secret key for session"; 
+const SESSION_SECRET = process.env.SESSION_SECRET || "my secret key for session";
+
 
 if (!DB_CONNECTION_STRING) {
     console.error('CRITICAL ERROR: DB_PATH is not set in the environment variables. Exiting application.');
     process.exit(1);
 }
 
+
 mongoose.connect(DB_CONNECTION_STRING)
     .then(() => {
         console.log('Main Mongoose connection to Mongo established successfully!');
 
+        
         const store = new MongoDBStore({
+            
             mongooseConnection: mongoose.connection,
             collection: 'sessions'
         });
 
+        
         store.on('error', function(error) {
             console.error('Session store error:', error);
         });
 
+        
         app.use(session ({
             secret: SESSION_SECRET, 
             resave: false,
             saveUninitialized: true,
             store: store,
             cookie: {
-               
-                secure: process.env.NODE_ENV === 'production',
-                httpOnly: true, 
+                secure: process.env.NODE_ENV === 'production', 
+                httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 24 * 7 
             }
         }));
@@ -103,11 +111,11 @@ mongoose.connect(DB_CONNECTION_STRING)
             storage, fileFilter
         }
 
-        app.use(express.urlencoded({ extended: true })); 
+        app.use(express.urlencoded({ extended: true }));
         app.use(express.json());
         app.use(multer(multerOptions).single('photo'));
 
-        app.use(express.static(path.join(rootDir, 'public'))); 
+        app.use(express.static(path.join(rootDir, 'public')));
         app.use('/uploads', express.static(path.join(rootDir, 'uploads')));
         app.use('/host/uploads', express.static(path.join(rootDir, 'uploads')));
         app.use('/homes/uploads', express.static(path.join(rootDir, 'uploads')));
@@ -116,13 +124,14 @@ mongoose.connect(DB_CONNECTION_STRING)
         app.use("/host", hostRouter);
         app.use(authRouter);
 
-        app.use(errorsController.pageNotFound); 
-        app.use((error, req, res, next) => { 
-            console.error(error); 
-            res.status(500).render('500', { title: 'Error!' }); 
+        
+        app.use(errorsController.pageNotFound);
+        app.use((error, req, res, next) => {
+            console.error(error);
+            res.status(500).render('500', { title: 'Error!' });
         });
 
-
+        
         app.listen(PORT, () => {
             console.log(`Server running on address ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}`);
         });
@@ -130,5 +139,5 @@ mongoose.connect(DB_CONNECTION_STRING)
     })
     .catch(err => {
         console.error('Error while connecting to Mongo (main connection): ', err);
-        process.exit(1); 
+        process.exit(1);
     });
