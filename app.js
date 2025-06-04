@@ -40,7 +40,7 @@ mongoose.connect(DB_CONNECTION_STRING)
         
         const store = new MongoDBStore({
             
-            mongooseConnection: mongoose.connection,
+            uri: DB_CONNECTION_STRING,
             collection: 'sessions'
         });
 
