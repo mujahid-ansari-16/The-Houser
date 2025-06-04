@@ -117,8 +117,17 @@ exports.postSignup = [
     })
     return user.save();
 
-  }).then(() => {
-    res.redirect("/login");
+  }).then((user) => {
+   req.session.isLoggedIn = true;
+    req.session.user = user;
+    req.session.userType = user.userType;
+    req.session.save((err) => {
+      if (err) {
+        console.log("Session save error:", err);
+        return res.redirect("/login");
+      }
+      res.redirect("/");
+    });
   }).catch(err => {
     console.error("Error saving user:", err);
     res.status(422).render("auth/signup", {
@@ -165,8 +174,15 @@ exports.postLogin = async (req, res, next) => {
   req.session.isLoggedIn = true;
   req.session.user = user;
   req.session.userType = user.userType;
-  await req.session.save();
+  req.session.save( (err) => {
+    if(err){
+      console.log("Session save error:", err);
+       return res.redirect("/login");
+    }
+  });
+  req.session.save(() => {
   res.redirect("/");
+});
 };
 
 exports.postLogout = (req, res, next) => {req.session.destroy(() => {

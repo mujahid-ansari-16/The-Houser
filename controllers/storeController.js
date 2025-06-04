@@ -58,7 +58,9 @@ exports.postAddToFavourite = async (req, res, next) => {
     user.favourites.push(homeId);
     await user.save();
   }
-  res.redirect("/favourites");
+  req.session.save(() => {
+    res.redirect("/favourites");
+  })
 };
 
 exports.postRemoveFromFavourite = async (req, res, next) => {
@@ -69,7 +71,9 @@ exports.postRemoveFromFavourite = async (req, res, next) => {
     user.favourites = user.favourites.filter(fav => fav != homeId);
     await user.save();
   }
-  res.redirect("/favourites");
+  req.session.save(() => {
+    res.redirect("/favourites");
+  })
 };
 
 exports.getHomeDetails = (req, res, next) => {
