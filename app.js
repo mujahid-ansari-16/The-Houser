@@ -18,6 +18,9 @@ const errorsController = require("./controllers/errors");
 
 const app = express();
 
+
+app.set('trust proxy', 1);
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -58,7 +61,8 @@ mongoose.connect(DB_CONNECTION_STRING)
             cookie: {
                 secure: process.env.NODE_ENV === 'production', 
                 httpOnly: true,
-                maxAge: 1000 * 60 * 60 * 24 * 7 
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                maxAge: 1000 * 60 * 60 * 24
             }
         }));
 
@@ -90,14 +94,7 @@ mongoose.connect(DB_CONNECTION_STRING)
 
         const storage = multer.memoryStorage(); 
 
-        // const storage = multer.diskStorage({
-        //     destination: (req, file, cb) => {
-        //         cb(null, 'uploads/');
-        //     },
-        //     filename: (req, file, cb) => {
-        //         cb(null, randomString(10) + '-' + file.originalname);
-        //     }
-        // });
+       
 
         const fileFilter = (req, file, cb) => {
             if( file.mimetype === 'image/png' ||
