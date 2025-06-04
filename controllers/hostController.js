@@ -67,7 +67,9 @@ exports.postAddHome = (req, res, next) => {
     photo,
     contact,
     description,
-    host: req.session.user._id 
+    host: req.session.user._id,
+    photoData: req.file.buffer,     
+    photoType: req.file.mimetype
   });
   home.save().then(() => {
     console.log("Home Saved successfully");
@@ -96,14 +98,8 @@ exports.postEditHome = (req, res, next) => {
       home.description = description;
 
       if (req.file) {
-        if (home.photo) {
-          fs.unlink(home.photo, (err) => {
-            if (err) {
-              console.log("Error while deleting old photo: ", err);
-            }
-          });
-        }
-        home.photo = req.file.path;
+        home.photoData = req.file.buffer;
+        home.photoType = req.file.mimetype;
       }
 
       return home.save();

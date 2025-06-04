@@ -21,6 +21,8 @@ const homeSchema = mongoose.Schema({
     type: Number,
     required: true
   },
+  photoData:Buffer,
+  photoType:String,
   photo: String,
   description: String,
 
